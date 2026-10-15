@@ -1,0 +1,41 @@
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bookstore-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: bookstore-app
+  template:
+    metadata:
+      labels:
+        app: bookstore-app
+    spec:
+      containers:
+        - name: bookstore-app
+          image: warmcoots/bookstore-app:v1
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            failureThreshold: 3
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bookstore-app-service
+spec:
+  type: NodePort
+  selector:
+    app: bookstore-app
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30014
+```
