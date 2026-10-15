@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = "warmcoots/bookstore-app"
+        STABLE_IMAGE = "warmcoots/bookstore-app:build-3"
         APP_NAME = "bookstore-app"
         IMAGE_TAG = "build-${BUILD_NUMBER}"
     }
