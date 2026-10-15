@@ -1,5 +1,12 @@
 pipeline {
     agent any
+        parameters {
+        booleanParam(
+            name: 'SIMULATE_FAILURE',
+            defaultValue: false,
+            description: 'Deploy an invalid image to test automatic rollback'
+        )
+    }
 
     environment {
         DOCKER_IMAGE = "warmcoots/bookstore-app"
