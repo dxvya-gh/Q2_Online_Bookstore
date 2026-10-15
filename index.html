@@ -1,0 +1,200 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Bookstore</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6fb;
+            color: #243047;
+        }
+        header {
+            background: #192b4d;
+            color: white;
+            padding: 28px 8%;
+            text-align: center;
+        }
+        header h1 { margin: 0 0 8px; }
+        header p { margin: 0; color: #d7e1f5; }
+        nav {
+            background: #263e67;
+            padding: 13px;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            margin: 0 16px;
+            text-decoration: none;
+        }
+        main {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        .intro { text-align: center; margin-bottom: 25px; }
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+        }
+        input, select {
+            padding: 11px;
+            border: 1px solid #cbd3e1;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+        .books {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 20px;
+        }
+        .book {
+            background: white;
+            border-radius: 10px;
+            padding: 22px;
+            box-shadow: 0 3px 12px #172b4d12;
+            border-top: 4px solid #4d78c8;
+        }
+        .book h3 { margin-top: 0; }
+        .category { color: #61718c; font-size: 14px; }
+        .price { font-size: 21px; font-weight: bold; color: #244f9b; }
+        .available { color: #187443; font-weight: bold; }
+        .unavailable { color: #b42318; font-weight: bold; }
+        footer {
+            text-align: center;
+            padding: 25px;
+            margin-top: 35px;
+            background: #192b4d;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Campus Bookstore</h1>
+        <p>Your next great read starts here.</p>
+    </header>
+
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#books">Books</a>
+        <a href="#contact">Contact</a>
+    </nav>
+
+    <main id="home">
+        <section class="intro">
+            <h2>Explore Our Collection</h2>
+            <p>Affordable books for students, developers, and curious minds.</p>
+        </section>
+
+        <section class="filters">
+            <input id="search" type="text" placeholder="Search books or authors..."
+                   aria-label="Search books">
+            <select id="category" aria-label="Filter by category">
+                <option value="all">All Categories</option>
+                <option value="Technology">Technology</option>
+                <option value="Science">Science</option>
+                <option value="Fiction">Fiction</option>
+                <option value="Business">Business</option>
+            </select>
+        </section>
+
+        <section class="books" id="books">
+            <article class="book" data-category="Technology">
+                <h3>Clean Code</h3>
+                <p class="category">Technology · Robert C. Martin</p>
+                <p>Learn principles for writing readable and maintainable software.</p>
+                <p class="price">₹650</p>
+                <p class="available">In Stock</p>
+            </article>
+
+            <article class="book" data-category="Technology">
+                <h3>Introduction to Algorithms</h3>
+                <p class="category">Technology · Thomas H. Cormen et al.</p>
+                <p>A comprehensive guide to algorithms and problem solving.</p>
+                <p class="price">₹950</p>
+                <p class="available">In Stock</p>
+            </article>
+
+            <article class="book" data-category="Science">
+                <h3>A Brief History of Time</h3>
+                <p class="category">Science · Stephen Hawking</p>
+                <p>An accessible exploration of space, time, and the universe.</p>
+                <p class="price">₹399</p>
+                <p class="available">In Stock</p>
+            </article>
+
+            <article class="book" data-category="Fiction">
+                <h3>1984</h3>
+                <p class="category">Fiction · George Orwell</p>
+                <p>A classic novel about surveillance and individual freedom.</p>
+                <p class="price">₹299</p>
+                <p class="available">In Stock</p>
+            </article>
+
+            <article class="book" data-category="Business">
+                <h3>Atomic Habits</h3>
+                <p class="category">Business · James Clear</p>
+                <p>Practical strategies for building better habits over time.</p>
+                <p class="price">₹499</p>
+                <p class="available">In Stock</p>
+            </article>
+
+            <article class="book" data-category="Fiction">
+                <h3>The Hobbit</h3>
+                <p class="category">Fiction · J. R. R. Tolkien</p>
+                <p>A fantasy adventure through a world of dragons and treasure.</p>
+                <p class="price">₹349</p>
+                <p class="unavailable">Currently Unavailable</p>
+            </article>
+        </section>
+
+        <p id="noResults" hidden>No books match your search.</p>
+
+        <section id="contact" class="intro" style="margin-top:35px">
+            <h2>Contact Us</h2>
+            <p>Email: bookstore@example.com</p>
+        </section>
+    </main>
+
+    <footer>
+        Campus Bookstore | Learning, one page at a time.
+    </footer>
+
+    <script>
+        const search = document.getElementById('search');
+        const category = document.getElementById('category');
+        const books = [...document.querySelectorAll('.book')];
+        const noResults = document.getElementById('noResults');
+
+        function filterBooks() {
+            const term = search.value.toLowerCase();
+            const selected = category.value;
+            let visible = 0;
+
+            books.forEach(book => {
+                const matchesText = book.textContent.toLowerCase().includes(term);
+                const matchesCategory =
+                    selected === 'all' || book.dataset.category === selected;
+                const show = matchesText && matchesCategory;
+
+                book.hidden = !show;
+                if (show) visible++;
+            });
+
+            noResults.hidden = visible !== 0;
+        }
+
+        search.addEventListener('input', filterBooks);
+        category.addEventListener('change', filterBooks);
+    </script>
+</body>
+</html>
+```
