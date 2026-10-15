@@ -101,7 +101,7 @@ pipeline {
                                 set -e
                                 kubectl --kubeconfig="$KUBECONFIG" set image \
                                   deployment/$APP_NAME \
-                                  $APP_NAME=$DOCKER_IMAGE:v1
+                                  $APP_NAME=$STABLE_IMAGE
 
                                 kubectl --kubeconfig="$KUBECONFIG" rollout status \
                                   deployment/$APP_NAME --timeout=120s
